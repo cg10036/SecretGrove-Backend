@@ -1,6 +1,6 @@
 import { HttpResponse } from "../helpers/response.helper";
 import * as bcrypt from "bcrypt";
-import { User } from "../entities/User";
+import { User } from "../../entities/User";
 
 const SALT = 12;
 
