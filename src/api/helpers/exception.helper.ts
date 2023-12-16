@@ -1,3 +1,5 @@
+import { HttpResponse } from "./response.helper";
+
 const Layer = require("express/lib/router/layer.js");
 
 const addCustomAsyncErrorHandler = () => {
@@ -16,5 +18,17 @@ const addCustomAsyncErrorHandler = () => {
     }
   };
 };
+const errorHandler = (err, req, res, next) => {
+  console.log(err);
+  if (err instanceof HttpResponse) {
+    res.status(err.status);
+    if (typeof err.data === "string") {
+      return res.send(err.data);
+    }
+    return res.json(err.data);
+  }
 
-export default addCustomAsyncErrorHandler;
+  return res.status(500).send("Internal Server Error");
+};
+
+export { addCustomAsyncErrorHandler, errorHandler };

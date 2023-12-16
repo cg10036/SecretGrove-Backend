@@ -2,9 +2,11 @@ import * as express from "express";
 import * as cors from "cors";
 import { AppDataSource } from "./data-source";
 import routes from "./api/routes/routes";
-import { errorHandler } from "./api/helpers/response.helper";
-import exceptionHelper from "./api/helpers/exception.helper";
-exceptionHelper();
+import {
+  errorHandler,
+  addCustomAsyncErrorHandler,
+} from "./api/helpers/exception.helper";
+addCustomAsyncErrorHandler();
 
 import * as uws from "uWebSockets.js";
 import cmdHandler from "./websocket/commands/commands";

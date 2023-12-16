@@ -3,15 +3,12 @@ import {
   BaseEntity,
   PrimaryGeneratedColumn,
   Column,
-  Unique,
   Index,
   CreateDateColumn,
 } from "typeorm";
 
 @Entity()
-@Unique(["username"])
-@Unique(["pubkey"])
-export class User extends BaseEntity {
+export class DeleteChat extends BaseEntity {
   @PrimaryGeneratedColumn("increment", { type: "bigint" })
   id: number;
 
@@ -22,9 +19,12 @@ export class User extends BaseEntity {
   createdAt: Date;
 
   @Index()
-  @Column("varchar")
-  username: string;
+  @Column("bigint", { name: "room_id", nullable: false })
+  roomId: number;
 
-  @Column("text")
-  pubkey: string;
+  @Column("bigint", { name: "chat_id", nullable: false })
+  chatId: number;
+
+  @Column("text", { nullable: false })
+  sign: string; // sign of chat_id with user's private key
 }
