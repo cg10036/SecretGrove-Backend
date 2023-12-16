@@ -7,7 +7,6 @@ import {
   CreateDateColumn,
 } from "typeorm";
 
-@Index(["isGroup", "createdAt"]) // cardinality of isGroup is lower than createdAt
 @Entity()
 export class Chat extends BaseEntity {
   @PrimaryGeneratedColumn("increment", { type: "bigint" })
