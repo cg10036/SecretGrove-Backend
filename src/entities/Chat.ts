@@ -19,7 +19,7 @@ export class Chat extends BaseEntity {
   createdAt: Date;
 
   @Index()
-  @Column("bigint", { name: "room_id", nullable: false }) // null if personal chat
+  @Column("bigint", { name: "room_id", nullable: false })
   roomId: number;
 
   @Column("text", { nullable: false })

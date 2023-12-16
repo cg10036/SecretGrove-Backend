@@ -1,14 +1,16 @@
 import { HttpResponse } from "../helpers/response.helper";
 import { Chat } from "../../entities/Chat";
 import { DeleteChat } from "../../entities/DeleteChat";
+import websocket from "../../websocket";
 
 const sendChat = async (roomId, message, from) => {
   let chat = new Chat();
   chat.roomId = roomId;
   chat.message = message;
   chat.from = from;
-  await chat.save();
-  return new HttpResponse(201, "");
+  chat = await chat.save();
+  await websocket.publishChat(chat);
+  return new HttpResponse(200, JSON.stringify(chat));
 };
 
 const deleteChat = async (roomId, chatId, sign) => {
@@ -16,8 +18,9 @@ const deleteChat = async (roomId, chatId, sign) => {
   deleteChat.roomId = roomId;
   deleteChat.chatId = chatId;
   deleteChat.sign = sign;
-  await deleteChat.save();
-  return new HttpResponse(204, "");
+  deleteChat = await deleteChat.save();
+  await websocket.publishDeleteChat(deleteChat);
+  return new HttpResponse(200, JSON.stringify(deleteChat));
 };
 
 export default { sendChat, deleteChat };

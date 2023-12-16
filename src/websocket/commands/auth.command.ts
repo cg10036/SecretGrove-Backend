@@ -1,5 +1,5 @@
 import * as uws from "uWebSockets.js";
-import pingController from "../controllers/ping.controller";
+import authController from "../controllers/auth.controller";
 
 export default async (
   ws: uws.WebSocket<unknown>,
@@ -7,8 +7,8 @@ export default async (
   data
 ): Promise<false | object> => {
   switch (cmd) {
-    case "ping":
-      return pingController.ping(data);
+    case "login":
+      return authController.login(ws, data);
   }
   return false;
 };
