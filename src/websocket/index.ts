@@ -31,9 +31,10 @@ const publishChat = async (chat: Chat) => {
   console.log(room);
   if (!room) return;
   let token = jwt.sign({ id: chat.id }, jwtConfig.Key, { expiresIn: "1m" });
-  [(room.from, room.to)]
+  [room.from, room.to]
     .filter((pubkey) => pubkey !== chat.from)
     .forEach((pubkey) => {
+      console.log(pubkey);
       app.publish(pubkey, JSON.stringify({ c: "chat", d: { chat, token } }));
     });
 };
