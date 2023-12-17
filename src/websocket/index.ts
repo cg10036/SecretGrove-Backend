@@ -1,9 +1,12 @@
 import * as uws from "uWebSockets.js";
+import * as jwt from "jsonwebtoken";
 import cmdHandler from "./commands/commands";
 import { Chat } from "../entities/Chat";
 import { DeleteChat } from "../entities/DeleteChat";
 import { Room } from "../entities/Room";
 import { DeleteRoom } from "../entities/DeleteRoom";
+
+import jwtConfig from "./config/jwt.config";
 
 let textDecoder = new TextDecoder();
 const app = uws.App().ws("/*", {
@@ -27,10 +30,11 @@ const publishChat = async (chat: Chat) => {
   console.log(chat);
   console.log(room);
   if (!room) return;
-  [room.from, room.to]
+  let token = jwt.sign({ id: chat.id }, jwtConfig.Key, { expiresIn: "1m" });
+  [(room.from, room.to)]
     .filter((pubkey) => pubkey !== chat.from)
     .forEach((pubkey) => {
-      app.publish(pubkey, JSON.stringify({ c: "chat", d: chat }));
+      app.publish(pubkey, JSON.stringify({ c: "chat", d: { chat, token } }));
     });
 };
 
